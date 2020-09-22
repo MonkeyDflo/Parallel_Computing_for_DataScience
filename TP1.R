@@ -73,6 +73,45 @@ argmin_p <- optimise(pertes, c(0,10), s=1, p=2)
 #https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/optimize
 print(argmin_p)
 
+#3. correction
+y <- simuData(20)
+
+for(p in c(1,2,5,1/2)) {
+  print(paste("Begin computation for p = ", p))
+  print(optimise(f=perte, interval = range(y), y=y, p=p))
+}
+
+
+ps <- c(1,2,5,1/2)
+lps <- length(ps)
+results <- data.frame(p = numerics(lps), 
+                      minimum = numerics(lps),
+                      objective = numerics(lps))
+
+#correction erreur avec le prof 
+
+# x* pour le minimum 
+# f(x*) => fonction objective => focntion qu'on cherche 
+
+#identical permet de comparer deux vecteurs
+
+#chronométrage
+system.time(f2simple(xtest)) #pd car les fonctions sont trop rapides
+system.time(f2renv(xtest))
+#replicate pour répliquer un appel, on va faire une centaine d'appe pour comparer les temsp d'éxécution des fonctons
+
+#Solution : utiliser microbenchmarking (avec répliques)
+#library(microbenchmark)
+#library(ggplot2)
+#affiche un tableau avec les perf
+#affiche un res graphique avec ggplot2
+
+#estimateur à noyau
+# barystogramme 
+
+# un = est en fait une fonction '=(f,sin(x)^2+sqrt(abs(x-3))')
+# tous les opérateurs sont des fonctions en fait
+
 ## Exercices additionnels ####
 
 
