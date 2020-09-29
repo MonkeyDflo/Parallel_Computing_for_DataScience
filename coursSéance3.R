@@ -14,6 +14,8 @@ identical(sum1, sum2)
 #3ème essai: Parallélism
 #install.packages("parallel")
 library(parallel)
+
+
 detectCores()
 cl<-makeCluster(2)
 s_parlist<-clusterApply(cl,y_list, sum)
@@ -71,3 +73,52 @@ lapply(longue_liste, head)
 #(U,V) unif sur Dk = {(u,v)€R²/ U^(1/k)+V^(1/k) <= 1}
 #u,v>=0
 #méthode du rejet pour deux dimensions ! 
+
+
+#29092020
+
+#4th try(foreach)
+library(foreach)
+library(doParallel)
+foreach(i = y_list, combine = sum) %dopar% sum(i)
+# alias qui permet de tout faire en séquentiel %do%
+# mais avec la répartition du foreach
+# généralement on code avec le do puis on passe au do par en suite
+# le combine combine tous les résultats. 
+
+
+## Exo 3 ####
+#leave one out
+#1. data(iris)
+data(iris)
+iris
+print(unique(iris$Species))
+scatter.smooth(x=iris$Sepal.Length, y=iris$Sepal.Width, main="Length ~ Width")  # scatterplot
+print(head(iris))
+print(head(iris[-1,]))
+iris[1,]$Sepal.Length
+fit <- lm(iris$Sepal.Length~iris$Sepal.Width, data=iris[-1,])
+fit
+yhat <- predict(fit, newdata = iris[1,])
+yhat
+
+#2. leave.one.out
+leave.one.out <- function(i){
+  fit <- lm(Sepal.Length~Sepal.Width, data=iris[-i,])
+  yhat <- predict(fit, newdata = iris$Petal.Width[i])
+  return (yhat-iris$Petal.Length[i])^2
+}
+
+#test 
+leave.one.out(1)
+
+#k-means avec les données centrées et réduites
+#center = 4 - nombre de groupes demandés
+#nstart = 5 - nombre d'essais avec différents individus de départ
+#parce que les résultats sont dépendants de l’initialisation
+#groupes.kmeans <- kmeans(fromage.cr,centers=4,nstart=5)
+#affichage des résultats
+#print(groupes.kmeans)
+#correspondance avec les groupes de la CAH
+#print(table(groupes.cah,groupes.kmeans$cluster))
+
