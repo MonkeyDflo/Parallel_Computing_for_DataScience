@@ -112,6 +112,24 @@ leave.one.out <- function(i){
 #test 
 leave.one.out(1)
 
+#3. Sequntial with for 
+for(i in 1:nrow(iris)) print(leave.one.out(i))
+
+#4. 
+lapply(1:nrow(iris), FUN = function(i) leave.one.out(i))
+#Reduce
+
+#5.
+library(parallel)
+
+cl <- makeCLuster(2)
+clusterExport(cl, lsit("leave.one.out"))
+
+#6. foreach 
+library(foreach)
+library(doParallel)
+registerDoParallel(cores = 4) #pour bien attribuer les 4 coeurs, sinon 3 coeurs peuvent être attibué 
+
 #k-means avec les données centrées et réduites
 #center = 4 - nombre de groupes demandés
 #nstart = 5 - nombre d'essais avec différents individus de départ
