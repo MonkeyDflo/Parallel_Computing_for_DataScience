@@ -2,9 +2,10 @@
 #04/10/2020
 #Florent Jakubowski
 
-#1ère variante : méthode du rejet
+#I.1 1ère variante : méthode du rejet ####
 
-simuRejection <- function(k, n, seed){
+simuRejection <- function(k, n, seed, isPlotted = FALSE){
+  # Input
   #k dégrés du polynôme
   #n nombres de point à tester
   #seed graine pour la génération aléatoire
@@ -33,17 +34,32 @@ simuRejection <- function(k, n, seed){
     }
   }
   
-  print(df)
-  #plot(df)
-  #plot(df$u,df$v)
+  # print(df[(df$isinDk == TRUE),])
+  if(isPlotted) {plot(df[(df$isinDk == TRUE),])}
   
-  #install.packages(plyr)
-  library(plyr)
-  print(subset(data, isinDk == TRUE))
-  #plot(df[df$isinDk == TRUE])
-   
-  #plot histo ou point
-  #return #un couple x,y,z accepté après les conditions ?
 }
 
-simuRejection(1,10,7)
+simuRejection(1, 10000, 7)
+
+#I.2 Mesure de la dégradation du temps de calcul ####
+
+estimateTime <- function(k, n, seed, isPlotted = FALSE){
+  for(j in k){
+    print( paste("k : ",  k, " : ", system.time(simuRejection(j, n, seed, isPlotted))) )
+  }
+}
+
+k <- c(1,2,3,4,5,10,20, 30, 40)
+
+estimateTime(k, 10000, 7, TRUE)
+a
+
+#install.packages("microbenchmark")
+#install.packages("ggplot2")
+# library(microbenchmark)
+# library(ggplot2)
+# m <- microbenchmark(estimateTime(k, 10000, 7),
+#                     times = 1)
+# ggplot2::autoplot(m)
+
+#
