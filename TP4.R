@@ -247,3 +247,4 @@ library(doParallel) # provides %dopar%
 registerDoParallel(cores = 4) 
 ...
 stopCluster(cl)
+
