@@ -9,6 +9,7 @@ simuRejection <- function(k, n, seed, isPlotted = FALSE){
   #k dégrés du polynôme
   #n nombres de point à tester
   #seed graine pour la génération aléatoire
+  #isPlotted Booléen pour afficher ou non le plot à chaque étape
   
   #1ère étape : générer n couple (u,v) aléatoire avec u et v compris [0;1]
   set.seed(seed)
@@ -18,23 +19,12 @@ simuRejection <- function(k, n, seed, isPlotted = FALSE){
   df <- data.frame(u, v, isinDk)
   
   #condition
-  
-  #try to use apply on df
-  # test <- function(u,v){
-  #   if ( u^(1/k) + v^(1/k) <= 1 ){
-  #     return(u,v)
-  #   }
-  # }
-  #apply(df, 1, function(df) test(df['u'],df['v'],df['isinDk']) )
-  #df$isinDk <- apply(df[,1:2], 1, test(df$[u],df$[v]))
-  
   for(i in 1:n){
     if ( df$u[i]^(1/k) + df$v[i]^(1/k) <= 1 ){
       df$isinDk[i] <- TRUE
     }
   }
   
-  # print(df[(df$isinDk == TRUE),])
   if(isPlotted) {plot(df[(df$isinDk == TRUE),])}
   
 }
@@ -52,14 +42,30 @@ estimateTime <- function(k, n, seed, isPlotted = FALSE){
 k <- c(1,2,3,4,5,10,20, 30, 40)
 
 estimateTime(k, 10000, 7, TRUE)
-a
 
-#install.packages("microbenchmark")
-#install.packages("ggplot2")
-# library(microbenchmark)
-# library(ggplot2)
-# m <- microbenchmark(estimateTime(k, 10000, 7),
-#                     times = 1)
-# ggplot2::autoplot(m)
+#II Echantillonage de Gibbs####
 
-#
+gibbs<-function (n) 
+{
+  mat <- matrix(ncol = 2, nrow = n)
+  x <- 0
+  y <- 0
+  mat[1, ] <- c(x, y)
+  for (i in 2:n) {
+    x <- runif(n) 
+    y <- runif(n)
+    mat[i, ] <- c(x, y)
+  }
+  mat
+}
+
+bvn<-gibbs(10000)
+par(mfrow=c(3,2))
+plot(bvn,col=1:10000)
+plot(bvn,type="l")
+plot(ts(bvn[,1]))
+plot(ts(bvn[,2]))
+hist(bvn[,1],40)
+hist(bvn[,2],40)
+par(mfrow=c(1,1))
+
