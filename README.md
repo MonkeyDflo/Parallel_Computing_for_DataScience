@@ -5,6 +5,6 @@ liste des packages utilisés :
 
 séance  5
 change BLAS to open OpenBlas
-sudo apt-get install libopenblas-base
-sudo apt-get install libopenblas-dev
-sudo update-alternatives --config libblas.so.3-x86_64-linux-gnu
+sudo apt-get install libopenblas-base  
+sudo apt-get install libopenblas-dev  
+sudo update-alternatives --config libblas.so.3-x86_64-linux-gnu  
