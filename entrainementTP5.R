@@ -27,6 +27,9 @@ regPolyA <- function(X, dg){
 
 print(regPolyA(x, 3))
 
+Rprof()
+summaryRprof()
+
 #B
 #C
 #D
